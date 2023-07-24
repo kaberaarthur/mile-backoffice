@@ -181,7 +181,7 @@ function Main() {
                     "xl:opacity-0 transition-opacity duration-200 ease-in-out",
                 ])}
               >
-                Waveform
+                Mile Taxi
               </span>
             </Link>
             <a
