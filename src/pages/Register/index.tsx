@@ -9,6 +9,8 @@ import LoadingIcon from "../../base-components/LoadingIcon";
 import { db, auth } from "../../../firebaseConfig";
 import firebase from "firebase/compat/app";
 
+import { useNavigate } from "react-router-dom";
+
 function Main() {
   const [isLoading, setIsLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -16,13 +18,29 @@ function Main() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
-
   const [newUser, setNewUser] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in, redirect to a different page (let's say '/dashboard')
+        navigate("/");
+      } else {
+        // No user is signed in, remain on the current page or redirect to a specific page
+        // history.push('/login');
+      }
+    });
+  }, [navigate]);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const navigateToSignIn = () => {
+    navigate("/login");
   };
 
   const registerUser = () => {
@@ -181,6 +199,7 @@ function Main() {
                   variant="primary"
                   className="w-full xl:mr-3"
                   onClick={registerUser}
+                  disabled={isLoading}
                 >
                   {isLoading ? (
                     <LoadingIcon
@@ -192,7 +211,12 @@ function Main() {
                     "Register"
                   )}
                 </Button>
-                <Button variant="outline-secondary" className="w-full mt-3">
+                <Button
+                  variant="outline-secondary"
+                  className="w-full mt-3"
+                  disabled={isLoading}
+                  onClick={navigateToSignIn}
+                >
                   Sign in
                 </Button>
               </div>
