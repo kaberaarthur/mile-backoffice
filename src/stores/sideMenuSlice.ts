@@ -127,6 +127,11 @@ const initialState: SideMenuState = {
       subMenu: [
         {
           icon: "Activity",
+          pathname: "/riders-data-list",
+          title: "Riders List",
+        },
+        {
+          icon: "Activity",
           pathname: "/crud-data-list",
           title: "Data List",
         },

@@ -17,7 +17,10 @@ import Pricing from "../pages/Pricing";
 import Invoice from "../pages/Invoice";
 import Faq from "../pages/Faq";
 import Timeline from "../pages/Timeline";
+
 import CrudDataList from "../pages/CrudDataList";
+import Riders from "../pages/Riders";
+
 import CrudForm from "../pages/CrudForm";
 import WizardLayout1 from "../pages/WizardLayout1";
 import WizardLayout2 from "../pages/WizardLayout2";
@@ -127,6 +130,10 @@ function Router() {
         {
           path: "/crud-data-list",
           element: <CrudDataList />,
+        },
+        {
+          path: "/riders-data-list",
+          element: <Riders />,
         },
         {
           path: "/crud-form",

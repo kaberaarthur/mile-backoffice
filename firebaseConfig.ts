@@ -1,15 +1,7 @@
-// Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyD0kPJKSOU4qtXrvddyAZFHeXQY2LMrz_M",
   authDomain: "mile-cab-app.firebaseapp.com",
@@ -20,11 +12,9 @@ const firebaseConfig = {
   measurementId: "G-763ZNR0FZZ",
 };
 
-// Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 
-// Use these for db & auth
-const db = app.firestore();
-const auth = firebase.auth();
+const db: firebase.firestore.Firestore = app.firestore();
+const auth: firebase.auth.Auth = firebase.auth();
 
 export { auth, db };
