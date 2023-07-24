@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Lucide from "../../base-components/Lucide";
 import Breadcrumb from "../../base-components/Breadcrumb";
 import { FormInput } from "../../base-components/Form";
@@ -7,8 +7,24 @@ import fakerData from "../../utils/faker";
 import _ from "lodash";
 import clsx from "clsx";
 
+import { db, auth } from "../../../firebaseConfig";
+import firebase from "firebase/compat/app";
+
+import { useNavigate } from "react-router-dom";
+
 function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
   const [searchResultModal, setSearchResultModal] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        // User is signed in, redirect to a different page (let's say '/dashboard')
+        navigate("/login");
+      }
+    });
+  }, [navigate]);
 
   // Show search result modal
   const showSearchResultModal = () => {
