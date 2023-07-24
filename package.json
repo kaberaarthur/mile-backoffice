@@ -25,6 +25,7 @@
     "@left4code/tw-starter": "^3.1.36",
     "@reduxjs/toolkit": "^1.8.5",
     "chart.js": "^3.9.1",
+    "crypto": "^1.0.1",
     "dayjs": "^1.11.5",
     "dropzone": "^6.0.0-beta.2",
     "firebase": "^10.1.0",
