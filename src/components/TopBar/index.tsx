@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
   const [searchResultModal, setSearchResultModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState<firebase.User | null>(null);
 
   const navigate = useNavigate();
 
@@ -22,6 +23,8 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
       if (!user) {
         // User is signed in, redirect to a different page (let's say '/dashboard')
         navigate("/login");
+      } else {
+        setCurrentUser(user);
       }
     });
   }, [navigate]);
@@ -260,11 +263,10 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
             </div>
             <div className="hidden ml-3 md:block text-slate-200">
               <div className="max-w-[7rem] truncate font-medium">
-                {fakerData[0]["users"][0]["name"]}
+                {currentUser?.displayName}
+                {/*fakerData[0]["users"][0]["name"]*/}
               </div>
-              <div className="text-xs text-slate-400">
-                {fakerData[0]["jobs"][0]}
-              </div>
+              <div className="text-xs text-slate-400">{currentUser?.email}</div>
             </div>
           </Menu.Button>
           <Menu.Items className="w-56 mt-px">
