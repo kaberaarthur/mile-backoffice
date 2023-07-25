@@ -110,7 +110,7 @@ function Main() {
                     Remember me
                   </label>
                 </div>
-                <a href="">Forgot Password?</a>
+                <a href="/forgot-password">Forgot Password?</a>
               </div>
               <div className="mt-5 text-center xl:mt-8 xl:text-left">
                 <label className="block mt-2 text-xs text-red-500">

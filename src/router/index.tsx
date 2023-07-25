@@ -25,8 +25,11 @@ import CrudForm from "../pages/CrudForm";
 import WizardLayout1 from "../pages/WizardLayout1";
 import WizardLayout2 from "../pages/WizardLayout2";
 import WizardLayout3 from "../pages/WizardLayout3";
+
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import ForgotPassword from "../pages/ForgotPassword";
+
 import ErrorPage from "../pages/ErrorPage";
 import RegularTable from "../pages/RegularTable";
 import Tabulator from "../pages/Tabulator";
@@ -256,6 +259,10 @@ function Router() {
     {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "/forgot-password",
+      element: <ForgotPassword />,
     },
     {
       path: "/error-page",

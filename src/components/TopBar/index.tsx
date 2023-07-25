@@ -18,6 +18,10 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
 
   const navigate = useNavigate();
 
+  const navigateToForgotPassword = () => {
+    navigate("/forgot-password");
+  };
+
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (!user) {
@@ -287,7 +291,7 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
             <Menu.Item>
               <Lucide icon="Edit" className="w-4 h-4 mr-2" /> Add Account
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item onClick={navigateToForgotPassword}>
               <Lucide icon="Lock" className="w-4 h-4 mr-2" /> Reset Password
             </Menu.Item>
             <Menu.Item>
