@@ -15,6 +15,7 @@ function Main() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -51,6 +52,7 @@ function Main() {
       if (err instanceof Error) {
         // check that err is an instance of Error
         console.log(err.message);
+        setErrMessage(err.message);
       } else {
         console.log(err);
       }
@@ -111,6 +113,9 @@ function Main() {
                 <a href="">Forgot Password?</a>
               </div>
               <div className="mt-5 text-center xl:mt-8 xl:text-left">
+                <label className="block mt-2 text-xs text-red-500">
+                  {errMessage}
+                </label>
                 <Button
                   variant="primary"
                   className="w-full xl:mr-3"

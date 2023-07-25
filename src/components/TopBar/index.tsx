@@ -34,6 +34,17 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
     setSearchResultModal(true);
   };
 
+  // Sign Out User
+  const signOut = async () => {
+    try {
+      console.log("Trying Logout");
+      await auth.signOut();
+      console.log("User signed out successfully");
+    } catch (err) {
+      console.error("Error signing out: ", err);
+    }
+  };
+
   // On press event (Ctrl+k)
   document.querySelectorAll("body")[0].onkeydown = (e) => {
     if ((e.ctrlKey || e.metaKey) && e.which == 75) {
@@ -283,8 +294,9 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
               <Lucide icon="HelpCircle" className="w-4 h-4 mr-2" /> Help
             </Menu.Item>
             <Menu.Divider />
-            <Menu.Item>
-              <Lucide icon="ToggleRight" className="w-4 h-4 mr-2" /> Logout
+            <Menu.Item onClick={signOut}>
+              <Lucide icon="ToggleRight" className="w-4 h-4 mr-2" />
+              Logout
             </Menu.Item>
           </Menu.Items>
         </Menu>
