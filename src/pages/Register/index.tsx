@@ -20,6 +20,7 @@ function Main() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [newUser, setNewUser] = useState("");
+  const [errMessage, setErrMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -66,6 +67,7 @@ function Main() {
             .catch(function (error) {
               // An error happened.
               console.error("User Profile Update Error", error);
+              setErrMessage(error.message);
             });
         } else {
           console.error("User is null");
@@ -195,6 +197,9 @@ function Main() {
                 .
               </div>
               <div className="mt-5 text-center xl:mt-8 xl:text-left">
+                <label className="block mt-2 text-xs text-red-500">
+                  {errMessage}
+                </label>
                 <Button
                   variant="primary"
                   className="w-full xl:mr-3"
