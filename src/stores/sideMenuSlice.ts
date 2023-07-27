@@ -23,6 +23,27 @@ const initialState: SideMenuState = {
       pathname: "/",
     },
     {
+      icon: "Inbox",
+      title: "Riders",
+      subMenu: [
+        {
+          icon: "Activity",
+          pathname: "/riders-data-list",
+          title: "Riders List",
+        },
+        {
+          icon: "Activity",
+          pathname: "/email-detail",
+          title: "Edit Rider",
+        },
+        {
+          icon: "Activity",
+          pathname: "/compose",
+          title: "Search Riders",
+        },
+      ],
+    },
+    {
       icon: "Calendar",
       pathname: "/calendar",
       title: "Calendar",
@@ -32,27 +53,7 @@ const initialState: SideMenuState = {
       pathname: "/chat",
       title: "Chat",
     },
-    {
-      icon: "Inbox",
-      title: "Email",
-      subMenu: [
-        {
-          icon: "Activity",
-          pathname: "/inbox",
-          title: "Inbox",
-        },
-        {
-          icon: "Activity",
-          pathname: "/email-detail",
-          title: "Email Detail",
-        },
-        {
-          icon: "Activity",
-          pathname: "/compose",
-          title: "Compose",
-        },
-      ],
-    },
+
     {
       icon: "CreditCard",
       title: "E-commerce",
