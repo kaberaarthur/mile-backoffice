@@ -33,11 +33,6 @@ const initialState: SideMenuState = {
         },
         {
           icon: "Activity",
-          pathname: "/email-detail",
-          title: "Edit Rider",
-        },
-        {
-          icon: "Activity",
           pathname: "/compose",
           title: "Search Riders",
         },

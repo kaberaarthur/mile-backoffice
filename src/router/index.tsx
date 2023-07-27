@@ -19,7 +19,10 @@ import Faq from "../pages/Faq";
 import Timeline from "../pages/Timeline";
 
 import CrudDataList from "../pages/CrudDataList";
+
+// Riders
 import Riders from "../pages/Riders";
+import ViewRider from "../pages/ViewRider";
 
 import CrudForm from "../pages/CrudForm";
 import WizardLayout1 from "../pages/WizardLayout1";
@@ -134,10 +137,18 @@ function Router() {
           path: "/crud-data-list",
           element: <CrudDataList />,
         },
+
+        // Riders
         {
           path: "/riders-data-list",
           element: <Riders />,
         },
+        {
+          path: "/view-rider/:id",
+          element: <ViewRider />,
+        },
+        // End of Riders
+
         {
           path: "/crud-form",
           element: <CrudForm />,

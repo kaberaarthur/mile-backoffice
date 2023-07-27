@@ -143,7 +143,12 @@ function Main() {
 */}
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-center bg-white border border-r-0 border-l-0 first:border-l last:border-r border-slate-200 dark:bg-darkmode-600 dark:border-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                    {rider.id}
+                    <a
+                      href={"/view-rider/" + rider.id}
+                      className="text-blue-700"
+                    >
+                      {rider.id}
+                    </a>
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md bg-white border border-r-0 border-l-0 first:border-l last:border-r border-slate-200 dark:bg-darkmode-600 dark:border-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     <a href="" className="font-medium whitespace-nowrap">
