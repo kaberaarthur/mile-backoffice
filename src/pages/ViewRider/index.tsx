@@ -9,11 +9,20 @@ import Table from "../../base-components/Table";
 
 import { useParams } from "react-router-dom";
 import { db, auth } from "../../../firebaseConfig";
-import { DocumentData } from "firebase/firestore";
+import firebase from "firebase/compat/app";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  DocumentData,
+} from "firebase/firestore";
 
 function Main() {
   const { id } = useParams();
   const [riderProfile, setRiderProfile] = useState<DocumentData[]>([]);
+  const [rides, setRides] = useState<DocumentData[]>([]);
 
   useEffect(() => {
     const fetchRiderProfile = async () => {
@@ -45,9 +54,49 @@ function Main() {
     };
 
     fetchRiderProfile();
-
-    // No cleanup is needed for this example, but you can add it if necessary
   }, [id]);
+
+  useEffect(() => {
+    const fetchRides = async () => {
+      try {
+        // Get the Firestore instance
+        // const db = getFirestore();
+
+        if (riderProfile.length > 0) {
+          console.log(riderProfile[0].authID);
+
+          // Prepare an array to hold the rides with IDs
+          const ridesWithIds: DocumentData[] = [];
+
+          db.collection("rides")
+            .where("riderId", "==", riderProfile[0].authID)
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                // console.log(doc.id, " => ", doc.data());
+
+                const rideData = doc.data();
+                const rideId = doc.id;
+                ridesWithIds.push({ id: rideId, ...rideData });
+              });
+
+              // Set the theRides state with the fetched rides
+              setRides(ridesWithIds);
+            })
+            .catch((error) => {
+              console.log("Error getting documents: ", error);
+            });
+        } else {
+          console.log("An Error");
+        }
+      } catch {
+        console.error("Error fetching rides:");
+      }
+    };
+
+    fetchRides();
+  }, [riderProfile]);
 
   return (
     <>
