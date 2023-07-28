@@ -1,95 +1,107 @@
 import Button from "../../base-components/Button";
 import { FormInput, FormLabel, FormSelect } from "../../base-components/Form";
+import { useState, useEffect } from "react";
 
 function Main() {
+  // State to hold the form input values
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [inputEmpty, setInputEmpty] = useState(false);
+
+  // State to hold the search results
+  const [searchResults, setSearchResults] = useState("");
+
+  // Function to handle form submission
+  const handleSearch = () => {
+    // Reset previous search results
+    setSearchResults("");
+
+    // Email validation regex pattern
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    // Phone number validation regex pattern
+    const phonePattern = /^\+254\d{9}$/;
+
+    // Check if email is empty or formatted correctly
+    if (email !== "" && !emailPattern.test(email)) {
+      console.log("Invalid email format");
+      setEmailError("Invalid email format");
+      return;
+    } else {
+      setEmailError("");
+    }
+
+    // Check if phone number is empty or formatted correctly
+    if (phoneNumber !== "" && !phonePattern.test(phoneNumber)) {
+      console.log("Invalid phone number format");
+      setPhoneError("Invalid phone number format");
+      return;
+    } else {
+      setPhoneError("");
+    }
+
+    // If both email and phoneNumber are empty, return without performing the search
+    if (email === "" && phoneNumber === "") {
+      console.log("Please enter an email address or phone number.");
+      setInputEmpty(true);
+      return;
+    } else {
+      setInputEmpty(false);
+    }
+
+    // Firestore Query End
+  };
+
   return (
     <>
       <div className="flex items-center mt-8">
-        <h2 className="mr-auto text-lg font-medium intro-y">Wizard Layout</h2>
+        <h2 className="mr-auto text-lg font-medium intro-y">Search Rider</h2>
       </div>
       {/* BEGIN: Wizard Layout */}
-      <div className="py-10 mt-5 intro-y box sm:py-20">
-        <div className="flex justify-center">
-          <Button
-            variant="primary"
-            className="w-10 h-10 mx-2 rounded-full intro-y"
-          >
-            1
-          </Button>
-          <Button className="w-10 h-10 mx-2 rounded-full intro-y bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 text-slate-500">
-            2
-          </Button>
-          <Button className="w-10 h-10 mx-2 rounded-full intro-y bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 text-slate-500">
-            3
-          </Button>
-        </div>
-        <div className="px-5 mt-10">
-          <div className="text-lg font-medium text-center">
-            Setup Your Account
-          </div>
-          <div className="mt-2 text-center text-slate-500">
-            To start off, please enter your username, email address and
-            password.
-          </div>
+      <div className="py-10 mt-2 intro-y box sm:py-20">
+        <div className="px-5 mt-2">
+          <div className="text-4xl font-medium text-center">Search Rider</div>
+          {inputEmpty && ( // Conditionally show the message if inputEmpty is true
+            <div className="mt-2 text-center text-red-600">
+              Please enter an email address or phone number.
+            </div>
+          )}
         </div>
         <div className="px-5 pt-10 mt-10 border-t sm:px-20 border-slate-200/60 dark:border-darkmode-400">
           <div className="text-base font-medium">Profile Settings</div>
           <div className="grid grid-cols-12 gap-4 mt-5 gap-y-5">
             <div className="col-span-12 intro-y sm:col-span-6">
-              <FormLabel htmlFor="input-wizard-1">From</FormLabel>
+              <FormLabel htmlFor="input-wizard-1">Email Address</FormLabel>
               <FormInput
                 id="input-wizard-1"
                 type="text"
                 placeholder="example@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
+              <p className="text-xs text-red-600 mt-2">{emailError}</p>
             </div>
             <div className="col-span-12 intro-y sm:col-span-6">
-              <FormLabel htmlFor="input-wizard-2">To</FormLabel>
+              <FormLabel htmlFor="input-wizard-2">Phone Number</FormLabel>
               <FormInput
                 id="input-wizard-2"
                 type="text"
-                placeholder="example@gmail.com"
+                placeholder="+254712345678"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
               />
-            </div>
-            <div className="col-span-12 intro-y sm:col-span-6">
-              <FormLabel htmlFor="input-wizard-3">Subject</FormLabel>
-              <FormInput
-                id="input-wizard-3"
-                type="text"
-                placeholder="Important Meeting"
-              />
-            </div>
-            <div className="col-span-12 intro-y sm:col-span-6">
-              <FormLabel htmlFor="input-wizard-4">Has the Words</FormLabel>
-              <FormInput
-                id="input-wizard-4"
-                type="text"
-                placeholder="Job, Work, Documentation"
-              />
-            </div>
-            <div className="col-span-12 intro-y sm:col-span-6">
-              <FormLabel htmlFor="input-wizard-5">Doesn't Have</FormLabel>
-              <FormInput
-                id="input-wizard-5"
-                type="text"
-                placeholder="Job, Work, Documentation"
-              />
-            </div>
-            <div className="col-span-12 intro-y sm:col-span-6">
-              <FormLabel htmlFor="input-wizard-6">Size</FormLabel>
-              <FormSelect id="input-wizard-6">
-                <option>10</option>
-                <option>25</option>
-                <option>35</option>
-                <option>50</option>
-              </FormSelect>
+              <p className="text-xs text-red-600 mt-2">{phoneError}</p>
             </div>
             <div className="flex items-center justify-center col-span-12 mt-5 intro-y sm:justify-end">
-              <Button variant="secondary" className="w-24">
-                Previous
-              </Button>
-              <Button variant="primary" className="w-24 ml-2">
-                Next
+              <Button
+                variant="primary"
+                className="w-24 ml-2"
+                onClick={handleSearch}
+              >
+                Search
               </Button>
             </div>
           </div>
