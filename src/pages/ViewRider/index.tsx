@@ -6,6 +6,7 @@ import _ from "lodash";
 import preview16Url from "../../assets/images/fakers/preview-16.jpg";
 import preview12Url from "../../assets/images/fakers/profile-12.jpg";
 import Table from "../../base-components/Table";
+import { Link } from "react-router-dom";
 
 import { useParams } from "react-router-dom";
 import { db, auth } from "../../../firebaseConfig";
@@ -98,6 +99,12 @@ function Main() {
     fetchRides();
   }, [riderProfile]);
 
+  // Function to convert Firestore timestamp to a human-readable date
+  const formatDate = (timestamp: firebase.firestore.Timestamp) => {
+    const date = new Date(timestamp.seconds * 1000); // Convert seconds to milliseconds
+    return date.toLocaleString(); // You can use other date formatting methods as well
+  };
+
   return (
     <>
       <div className="flex flex-col items-center mt-8 intro-y sm:flex-row">
@@ -179,46 +186,56 @@ function Main() {
                   <Table.Thead>
                     <Table.Tr>
                       <Table.Th className="whitespace-nowrap">#</Table.Th>
+                      <Table.Th className="whitespace-nowrap">Origin</Table.Th>
                       <Table.Th className="whitespace-nowrap">
-                        First Name
+                        Destination
                       </Table.Th>
                       <Table.Th className="whitespace-nowrap">
-                        Last Name
+                        Client Fee
                       </Table.Th>
-                      <Table.Th className="whitespace-nowrap">
-                        Username
-                      </Table.Th>
+                      <Table.Th className="whitespace-nowrap">Date</Table.Th>
+                      <Table.Th className="whitespace-nowrap">Action</Table.Th>
                     </Table.Tr>
                   </Table.Thead>
+
                   <Table.Tbody>
-                    <Table.Tr>
-                      <Table.Td>1</Table.Td>
-                      <Table.Td>Angelina</Table.Td>
-                      <Table.Td>Jolie</Table.Td>
-                      <Table.Td>@angelinajolie</Table.Td>
-                    </Table.Tr>
-                    <Table.Tr>
-                      <Table.Td>2</Table.Td>
-                      <Table.Td>Brad</Table.Td>
-                      <Table.Td>Pitt</Table.Td>
-                      <Table.Td>@bradpitt</Table.Td>
-                    </Table.Tr>
-                    <Table.Tr>
-                      <Table.Td>3</Table.Td>
-                      <Table.Td>Charlie</Table.Td>
-                      <Table.Td>Hunnam</Table.Td>
-                      <Table.Td>@charliehunnam</Table.Td>
-                    </Table.Tr>
+                    {rides.map((ride, index) => (
+                      <Table.Tr key={ride.id}>
+                        <Table.Td>{index + 1}</Table.Td>
+                        <Table.Td>
+                          {ride.rideOrigin[0].description.split(",")[0]}
+                        </Table.Td>
+                        <Table.Td>
+                          {ride.rideDestination[0].description.split(",")[0]}
+                        </Table.Td>
+                        <Table.Td>{ride.totalClientPays}</Table.Td>
+                        <Table.Td>{formatDate(ride.dateCreated)}</Table.Td>
+                        <Table.Td>
+                          {/* Link to the ride details page with the specific ride ID */}
+                          <Link to={`/view-ride/${ride.id}`}>
+                            <Button variant="primary" className="w-32 mr-2">
+                              <Lucide
+                                icon="UserPlus"
+                                className="w-4 h-4 mr-2"
+                              />
+                              View More
+                            </Button>
+                          </Link>
+                        </Table.Td>
+                      </Table.Tr>
+                    ))}
                   </Table.Tbody>
                 </Table>
               </div>
               {/* End Table */}
+              {/* 
               <Button
                 variant="outline-secondary"
                 className="flex w-full mt-5 border-slate-200/60"
               >
                 View More
               </Button>
+              */}
             </div>
           </div>
         </div>

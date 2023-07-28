@@ -23,6 +23,7 @@ import CrudDataList from "../pages/CrudDataList";
 // Riders
 import Riders from "../pages/Riders";
 import ViewRider from "../pages/ViewRider";
+import ViewRide from "../pages/ViewRide";
 
 import CrudForm from "../pages/CrudForm";
 import WizardLayout1 from "../pages/WizardLayout1";
@@ -148,6 +149,13 @@ function Router() {
           element: <ViewRider />,
         },
         // End of Riders
+
+        // Start Rides
+        {
+          path: "/view-ride/:id",
+          element: <ViewRide />,
+        },
+        // End Rides
 
         {
           path: "/crud-form",
