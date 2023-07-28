@@ -22,6 +22,7 @@ import CrudDataList from "../pages/CrudDataList";
 
 // Riders
 import Riders from "../pages/Riders";
+import SearchRider from "../pages/SearchRider";
 import ViewRider from "../pages/ViewRider";
 import ViewRide from "../pages/ViewRide";
 
@@ -148,6 +149,10 @@ function Router() {
           path: "/view-rider/:id",
           element: <ViewRider />,
         },
+        {
+          path: "/search-rider",
+          element: <SearchRider />,
+        },
         // End of Riders
 
         // Start Rides
@@ -155,6 +160,7 @@ function Router() {
           path: "/view-ride/:id",
           element: <ViewRide />,
         },
+
         // End Rides
 
         {
