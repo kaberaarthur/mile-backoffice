@@ -29,6 +29,7 @@ import ViewRide from "../pages/ViewRide";
 // Drivers
 import Drivers from "../pages/Drivers";
 import SearchDriver from "../pages/SearchDriver";
+import ViewDriver from "../pages/ViewDriver";
 
 import CrudForm from "../pages/CrudForm";
 import WizardLayout1 from "../pages/WizardLayout1";
@@ -167,6 +168,10 @@ function Router() {
         {
           path: "/search-driver",
           element: <SearchDriver />,
+        },
+        {
+          path: "/view-driver/:id",
+          element: <ViewDriver />,
         },
         // End Drivers
 

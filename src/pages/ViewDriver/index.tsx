@@ -28,7 +28,7 @@ function Main() {
   useEffect(() => {
     const fetchRiderProfile = async () => {
       try {
-        var docRef = db.collection("riders").doc(id);
+        var docRef = db.collection("drivers").doc(id);
 
         docRef
           .get()
@@ -244,13 +244,15 @@ function Main() {
         <div className="col-span-12 xl:col-span-4">
           <div className="p-5 box intro-y">
             <div className="flex items-center pb-5 mb-5 border-b border-slate-200/60 dark:border-darkmode-400">
-              <div className="text-base font-medium truncate">Wallet</div>
+              <div className="text-base font-medium truncate">
+                Lifetime Earnings
+              </div>
             </div>
             <div>
               <div className="flex pb-5 mb-5 border-b border-dashed border-slate-200 last:border-b-0 last:pb-0 last:mb-0">
                 <div className="">
                   <div className="text-4xl text-blue-900 font-medium">
-                    Kshs. 1350
+                    Kshs. {riderProfile[0]?.lifetimeEarnings || "Loading..."}
                   </div>
                 </div>
               </div>
@@ -258,13 +260,15 @@ function Main() {
           </div>
           <div className="p-5 mt-5 box intro-y">
             <div className="flex items-center pb-5 mb-5 border-b border-slate-200/60 dark:border-darkmode-400">
-              <div className="text-base font-medium truncate">Total Spent</div>
+              <div className="text-base font-medium truncate">
+                Total Rides Taken
+              </div>
             </div>
             <div>
               <div className="flex pb-5 mb-5 border-b border-dashed border-slate-200 last:border-b-0 last:pb-0 last:mb-0">
                 <div className="">
                   <div className="text-4xl text-blue-900 font-medium">
-                    Kshs. 6870
+                    {riderProfile[0]?.totalRidesTaken || "Loading..."}
                   </div>
                 </div>
               </div>
