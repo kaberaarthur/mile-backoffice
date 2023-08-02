@@ -44,7 +44,7 @@ const initialState: SideMenuState = {
       subMenu: [
         {
           icon: "Activity",
-          pathname: "/riders-data-list",
+          pathname: "/drivers-data-list",
           title: "Drivers List",
         },
         {
