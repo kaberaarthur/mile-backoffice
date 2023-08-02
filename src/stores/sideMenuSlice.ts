@@ -39,6 +39,22 @@ const initialState: SideMenuState = {
       ],
     },
     {
+      icon: "Trello",
+      title: "Drivers",
+      subMenu: [
+        {
+          icon: "Activity",
+          pathname: "/riders-data-list",
+          title: "Drivers List",
+        },
+        {
+          icon: "Activity",
+          pathname: "/search-driver",
+          title: "Search Driver",
+        },
+      ],
+    },
+    {
       icon: "Calendar",
       pathname: "/calendar",
       title: "Calendar",

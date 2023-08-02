@@ -26,6 +26,9 @@ import SearchRider from "../pages/SearchRider";
 import ViewRider from "../pages/ViewRider";
 import ViewRide from "../pages/ViewRide";
 
+// Drivers
+import SearchDriver from "../pages/SearchDriver";
+
 import CrudForm from "../pages/CrudForm";
 import WizardLayout1 from "../pages/WizardLayout1";
 import WizardLayout2 from "../pages/WizardLayout2";
@@ -154,6 +157,13 @@ function Router() {
           element: <SearchRider />,
         },
         // End of Riders
+
+        // Start Drivers
+        {
+          path: "/search-driver",
+          element: <SearchDriver />,
+        },
+        // End Drivers
 
         // Start Rides
         {
