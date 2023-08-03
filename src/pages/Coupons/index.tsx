@@ -52,6 +52,17 @@ function Main() {
     return "Invalid Timestamp";
   };
 
+  const deleteCoupon = async (riderId: string): Promise<void> => {
+    try {
+      const firestore = firebase.firestore();
+      const couponRef = firestore.collection("coupons").doc(riderId);
+      await couponRef.delete();
+      console.log(`Coupon with ID ${riderId} deleted successfully.`);
+    } catch (error) {
+      console.error("Error deleting coupon:", error);
+    }
+  };
+
   return (
     <>
       <h2 className="mt-10 text-lg font-medium intro-y">Coupons</h2>
@@ -102,7 +113,10 @@ function Main() {
                     {formatDate(rider.expiryDate)}
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-center bg-white border border-r-0 border-l-0 first:border-l last:border-r border-slate-200 dark:bg-darkmode-600 dark:border-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                    <Button variant="primary">
+                    <Button
+                      variant="primary"
+                      onClick={() => deleteCoupon(rider.id)}
+                    >
                       {isLoading ? (
                         <LoadingIcon
                           icon="oval"
@@ -120,35 +134,6 @@ function Main() {
           </Table>
         </div>
         {/* END: Data List */}
-        {/* BEGIN: Pagination */}
-        <div className="flex flex-wrap items-center col-span-12 intro-y sm:flex-row sm:flex-nowrap">
-          <Pagination className="w-full sm:w-auto sm:mr-auto">
-            <Pagination.Link>
-              <Lucide icon="ChevronsLeft" className="w-4 h-4" />
-            </Pagination.Link>
-            <Pagination.Link>
-              <Lucide icon="ChevronLeft" className="w-4 h-4" />
-            </Pagination.Link>
-            <Pagination.Link>...</Pagination.Link>
-            <Pagination.Link>1</Pagination.Link>
-            <Pagination.Link active>2</Pagination.Link>
-            <Pagination.Link>3</Pagination.Link>
-            <Pagination.Link>...</Pagination.Link>
-            <Pagination.Link>
-              <Lucide icon="ChevronRight" className="w-4 h-4" />
-            </Pagination.Link>
-            <Pagination.Link>
-              <Lucide icon="ChevronsRight" className="w-4 h-4" />
-            </Pagination.Link>
-          </Pagination>
-          <FormSelect className="w-20 mt-3 !box sm:mt-0">
-            <option>10</option>
-            <option>25</option>
-            <option>35</option>
-            <option>50</option>
-          </FormSelect>
-        </div>
-        {/* END: Pagination */}
       </div>
       {/* BEGIN: Delete Confirmation Modal */}
       <Dialog
