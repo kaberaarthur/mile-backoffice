@@ -33,6 +33,7 @@ import ViewDriver from "../pages/ViewDriver";
 
 // Rewards
 import AddCoupon from "../pages/AddCoupon";
+import Coupons from "../pages/Coupons";
 
 import CrudForm from "../pages/CrudForm";
 import WizardLayout1 from "../pages/WizardLayout1";
@@ -189,6 +190,10 @@ function Router() {
         {
           path: "/add-coupon",
           element: <AddCoupon />,
+        },
+        {
+          path: "/coupons",
+          element: <Coupons />,
         },
         // End Rewards
 

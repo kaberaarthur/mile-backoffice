@@ -70,7 +70,7 @@ const initialState: SideMenuState = {
         },
         {
           icon: "Activity",
-          pathname: "/add-coupon",
+          pathname: "/coupons",
           title: "Coupons",
         },
       ],

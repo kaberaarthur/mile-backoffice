@@ -38,31 +38,6 @@ function Main() {
   const [datepickerModalPreview, setDatepickerModalPreview] = useState(false);
   const cancelButtonRef = useRef(null);
 
-  function validateCouponPercent(
-    setInputError: React.Dispatch<React.SetStateAction<boolean>>
-  ) {
-    const inputElement = document.getElementById(
-      "horizontal-form-2"
-    ) as HTMLInputElement;
-    const couponPercent = inputElement?.value?.trim() || "";
-
-    // Step 1: Check if the value contains any special characters
-    const specialCharsRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-    if (specialCharsRegex.test(couponPercent)) {
-      setInputError(true); // Set inputError to true
-      return false;
-    }
-
-    // Step 2: Check if the number is not above 100
-    const parsedValue = parseInt(couponPercent, 10);
-    if (isNaN(parsedValue) || parsedValue > 100) {
-      setInputError(true); // Set inputError to true
-    }
-
-    // If everything is valid, reset inputError to false and return true
-    setInputError(false);
-  }
-
   // Function to create a coupon in Firestore
   const createCoupon = () => {
     setIsLoading(true);
