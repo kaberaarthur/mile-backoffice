@@ -31,6 +31,9 @@ import Drivers from "../pages/Drivers";
 import SearchDriver from "../pages/SearchDriver";
 import ViewDriver from "../pages/ViewDriver";
 
+// Rewards
+import AddCoupon from "../pages/AddCoupon";
+
 import CrudForm from "../pages/CrudForm";
 import WizardLayout1 from "../pages/WizardLayout1";
 import WizardLayout2 from "../pages/WizardLayout2";
@@ -180,8 +183,14 @@ function Router() {
           path: "/view-ride/:id",
           element: <ViewRide />,
         },
-
         // End Rides
+
+        // Start Rewards
+        {
+          path: "/add-coupon",
+          element: <AddCoupon />,
+        },
+        // End Rewards
 
         {
           path: "/crud-form",

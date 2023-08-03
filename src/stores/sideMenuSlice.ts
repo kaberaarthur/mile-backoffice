@@ -52,6 +52,27 @@ const initialState: SideMenuState = {
           pathname: "/search-driver",
           title: "Search Driver",
         },
+        {
+          icon: "Activity",
+          pathname: "/search-driver",
+          title: "Applications",
+        },
+      ],
+    },
+    {
+      icon: "ShoppingBag",
+      title: "Rewards",
+      subMenu: [
+        {
+          icon: "Activity",
+          pathname: "/add-coupon",
+          title: "Add Coupon",
+        },
+        {
+          icon: "Activity",
+          pathname: "/add-coupon",
+          title: "Coupons",
+        },
       ],
     },
     {
