@@ -1,11 +1,14 @@
 import _ from "lodash";
 import clsx from "clsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import fakerData from "../../utils/faker";
 import Button from "../../base-components/Button";
 import { FormInput, FormTextarea } from "../../base-components/Form";
 import Lucide from "../../base-components/Lucide";
 import { Menu, Tab } from "../../base-components/Headless";
+
+import { db, auth } from "../../../firebaseConfig";
+import firebase from "firebase/compat/app";
 
 function Main() {
   return (

@@ -35,6 +35,10 @@ import ViewDriver from "../pages/ViewDriver";
 import AddCoupon from "../pages/AddCoupon";
 import Coupons from "../pages/Coupons";
 
+// Reports
+import Reports from "../pages/Reports";
+import ViewReport from "../pages/ViewReport";
+
 import CrudForm from "../pages/CrudForm";
 import WizardLayout1 from "../pages/WizardLayout1";
 import WizardLayout2 from "../pages/WizardLayout2";
@@ -196,6 +200,17 @@ function Router() {
           element: <Coupons />,
         },
         // End Rewards
+
+        // Start Reports
+        {
+          path: "/reports",
+          element: <Reports />,
+        },
+        {
+          path: "/view-report/:id",
+          element: <ViewReport />,
+        },
+        // End Reports
 
         {
           path: "/crud-form",

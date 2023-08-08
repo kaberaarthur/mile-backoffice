@@ -76,6 +76,11 @@ const initialState: SideMenuState = {
       ],
     },
     {
+      icon: "MessageSquare",
+      pathname: "/reports",
+      title: "Reports",
+    },
+    {
       icon: "Calendar",
       pathname: "/calendar",
       title: "Calendar",
