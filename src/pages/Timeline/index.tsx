@@ -61,6 +61,30 @@ function Main() {
             </div>
           </div>
           {/* END: Timeline Content */}
+          {/* BEGIN: Timeline Content Latest */}
+          <div className="lg:ml-[51%] pl-6 lg:pl-[51px] before:content-[''] before:absolute before:w-20 before:h-px before:mt-8 before:left-[60px] before:bg-slate-200 before:dark:bg-darkmode-400 before:rounded-full before:inset-x-0 before:mx-auto before:z-[-1]">
+            <div className="bg-white dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 mt-10 before:content-[''] before:absolute before:w-6 before:h-6 before:bg-primary/20 before:rounded-full before:inset-x-0 lg:before:ml-auto before:mr-auto lg:before:animate-ping after:content-[''] after:absolute after:w-6 after:h-6 after:bg-primary after:rounded-full after:inset-x-0 lg:after:ml-auto after:mr-auto after:border-4 after:border-white/60 after:dark:border-darkmode-300">
+              <div className="mr-3">
+                <div className="w-12 h-12 image-fit">
+                  <img
+                    alt="Rocketman - HTML Admin Template"
+                    className="rounded-full"
+                    src={fakerData[0].images[1]}
+                  />
+                </div>
+              </div>
+              <div>
+                <a href="" className="font-medium text-primary">
+                  {fakerData[0].users[0].name}
+                </a>
+                {fakerData[0].news[0].shortContent}.
+                <div className="text-slate-500 text-xs mt-1.5">
+                  {fakerData[0].dates[0]} - {fakerData[0].times[0]}
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* END: Timeline Content Latest */}
           <div className="relative z-10 py-2 my-5 text-xs text-center bg-white dark:bg-darkmode-600 text-slate-500">
             April, 2022
           </div>
