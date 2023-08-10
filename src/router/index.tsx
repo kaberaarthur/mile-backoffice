@@ -37,6 +37,7 @@ import Coupons from "../pages/Coupons";
 
 // Reports
 import Reports from "../pages/Reports";
+import ReportsSolved from "../pages/ReportsSolved";
 import ViewReport from "../pages/ViewReport";
 
 import CrudForm from "../pages/CrudForm";
@@ -205,6 +206,10 @@ function Router() {
         {
           path: "/reports",
           element: <Reports />,
+        },
+        {
+          path: "/reports-solved",
+          element: <ReportsSolved />,
         },
         {
           path: "/view-report/:id",

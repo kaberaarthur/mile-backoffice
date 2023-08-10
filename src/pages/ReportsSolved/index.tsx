@@ -26,7 +26,7 @@ function Main() {
   useEffect(() => {
     const unsubscribe = db
       .collection("reports")
-      .where("resolved", "==", false)
+      .where("resolved", "==", true)
       .onSnapshot((snapshot: firebase.firestore.QuerySnapshot) => {
         const fetchedRiders: Rider[] = [];
         snapshot.forEach((doc) => {

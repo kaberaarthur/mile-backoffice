@@ -77,8 +77,35 @@ const initialState: SideMenuState = {
     },
     {
       icon: "MessageSquare",
-      pathname: "/reports",
       title: "Reports",
+      subMenu: [
+        {
+          icon: "Activity",
+          pathname: "/reports",
+          title: "Unresolved",
+        },
+        {
+          icon: "Activity",
+          pathname: "/reports-solved",
+          title: "Resolved",
+        },
+      ],
+    },
+    {
+      icon: "CreditCard",
+      title: "Corporate",
+      subMenu: [
+        {
+          icon: "Activity",
+          pathname: "/reports",
+          title: "Unresolved",
+        },
+        {
+          icon: "Activity",
+          pathname: "/reports-solved",
+          title: "Resolved",
+        },
+      ],
     },
     {
       icon: "Calendar",
