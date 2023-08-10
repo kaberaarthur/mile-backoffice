@@ -23,7 +23,7 @@ function Main() {
   useEffect(() => {
     const unsubscribe = db
       .collection("drivers")
-      .where("approved", "==", true)
+      .where("approved", "==", false)
       .onSnapshot((snapshot: firebase.firestore.QuerySnapshot) => {
         const fetchedRiders: Rider[] = [];
         snapshot.forEach((doc) => {
@@ -157,7 +157,7 @@ function Main() {
         </div>
         {/* END: Data List */}
         {/* BEGIN: Pagination */}
-        {/*
+        {/* 
         <div className="flex flex-wrap items-center col-span-12 intro-y sm:flex-row sm:flex-nowrap">
           <Pagination className="w-full sm:w-auto sm:mr-auto">
             <Pagination.Link>
@@ -185,7 +185,7 @@ function Main() {
             <option>50</option>
           </FormSelect>
         </div>
-      */}
+        */}
         {/* END: Pagination */}
       </div>
       {/* BEGIN: Delete Confirmation Modal */}

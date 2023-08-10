@@ -44,17 +44,17 @@ const initialState: SideMenuState = {
       subMenu: [
         {
           icon: "Activity",
-          pathname: "/drivers-data-list",
-          title: "Drivers List",
-        },
-        {
-          icon: "Activity",
           pathname: "/search-driver",
           title: "Search Driver",
         },
         {
           icon: "Activity",
-          pathname: "/search-driver",
+          pathname: "/drivers-data-list",
+          title: "Drivers List",
+        },
+        {
+          icon: "Activity",
+          pathname: "/drivers-applications",
           title: "Applications",
         },
       ],
@@ -98,12 +98,12 @@ const initialState: SideMenuState = {
         {
           icon: "Activity",
           pathname: "/reports",
-          title: "Unresolved",
+          title: "Registered Corporates",
         },
         {
           icon: "Activity",
           pathname: "/reports-solved",
-          title: "Resolved",
+          title: "Add Company",
         },
       ],
     },

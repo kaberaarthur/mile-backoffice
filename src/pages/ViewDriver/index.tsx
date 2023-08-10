@@ -7,6 +7,7 @@ import preview16Url from "../../assets/images/fakers/preview-16.jpg";
 import preview12Url from "../../assets/images/fakers/profile-12.jpg";
 import Table from "../../base-components/Table";
 import { Link } from "react-router-dom";
+import LoadingIcon from "../../base-components/LoadingIcon";
 
 import { useParams } from "react-router-dom";
 import { db, auth } from "../../../firebaseConfig";
@@ -24,6 +25,7 @@ function Main() {
   const { id } = useParams();
   const [riderProfile, setRiderProfile] = useState<DocumentData[]>([]);
   const [rides, setRides] = useState<DocumentData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchRiderProfile = async () => {
@@ -105,6 +107,58 @@ function Main() {
     return date.toLocaleString(); // You can use other date formatting methods as well
   };
 
+  const approveDriver = async () => {
+    if (!id) {
+      console.error("No document ID provided.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const db = firebase.firestore();
+      const driverRef = db.collection("drivers").doc(id);
+
+      // Update the 'approved' field to true
+      await driverRef.update({
+        approved: true,
+      });
+
+      console.log("Driver approved successfully.");
+    } catch (error) {
+      console.error("Error approving driver:", error);
+    } finally {
+      setIsLoading(false);
+      window.location.reload(); // Reload the page
+    }
+  };
+
+  const cancelDriverApproval = async () => {
+    if (!id) {
+      console.error("No document ID provided.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const db = firebase.firestore();
+      const driverRef = db.collection("drivers").doc(id);
+
+      // Update the 'approved' field to false
+      await driverRef.update({
+        approved: false,
+      });
+
+      console.log("Driver approval canceled successfully.");
+    } catch (error) {
+      console.error("Error canceling driver approval:", error);
+    } finally {
+      setIsLoading(false);
+      window.location.reload(); // Reload the page
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col items-center mt-8 intro-y sm:flex-row">
@@ -153,13 +207,14 @@ function Main() {
                 </div>
                 <div className="flex items-center justify-center col-span-2 md:col-span-1 2xl:justify-start">
                   <Lucide icon="Speaker" className="w-4 h-4 mr-2" />
-                  {riderProfile[0]?.language || "Loading..."}
+                  {riderProfile[0]?.approved ? "Approved" : "Not Approved"}
                 </div>
                 <div className="flex items-center justify-center col-span-2 md:col-span-1 2xl:justify-start">
                   <Lucide icon="DollarSign" className="w-4 h-4 mr-2" />
                   {riderProfile[0]?.partnerCode || "Loading..."}
                 </div>
               </div>
+              {/* 
               <div className="flex mt-5 2xl:mr-10">
                 <Button variant="primary" className="w-32 mr-2">
                   <Lucide icon="UserPlus" className="w-4 h-4 mr-2" /> Following
@@ -169,10 +224,100 @@ function Main() {
                   Friend
                 </Button>
               </div>
+              */}
             </div>
           </div>
+
+          {/* Details */}
+          <div className="p-5 box intro-y mt-5">
+            <div className="flex items-center pb-5 mb-5 border-b border-slate-200/60 dark:border-darkmode-400">
+              {!riderProfile[0]?.approved ? (
+                <div className="">
+                  <Button
+                    variant="primary"
+                    onClick={approveDriver}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <LoadingIcon
+                        icon="oval"
+                        className="w-8 h-8"
+                        color="white"
+                      />
+                    ) : (
+                      "Approve Driver"
+                    )}
+                  </Button>
+                </div>
+              ) : (
+                <div className="">
+                  <Button
+                    variant="primary"
+                    onClick={cancelDriverApproval}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <LoadingIcon
+                        icon="oval"
+                        className="w-8 h-8"
+                        color="white"
+                      />
+                    ) : (
+                      "Cancel Driver Approval"
+                    )}
+                  </Button>
+                </div>
+              )}
+            </div>
+            <div className="flex items-center mb-3">
+              <Lucide
+                icon="Clipboard"
+                className="w-4 h-4 mr-2 text-slate-500"
+              />
+              Driving License:
+              <span className="text-primary text-sm font-medium">
+                {" "}
+                mydrivinglicense-08-10-23-mfod2ChZRpsZRGQMEfne.pdf
+              </span>
+            </div>
+            <div className="flex items-center mb-3">
+              <Lucide
+                icon="Clipboard"
+                className="w-4 h-4 mr-2 text-slate-500"
+              />
+              Vehicle Logbook:
+              <span className="text-primary text-sm font-medium">
+                {" "}
+                logbook-08-10-23-mfod2ChZRpsZRGQMEfne.pdf
+              </span>
+            </div>
+            <div className="flex items-center mb-3">
+              <Lucide
+                icon="Clipboard"
+                className="w-4 h-4 mr-2 text-slate-500"
+              />
+              KRA PIN:
+              <span className="text-primary text-sm font-medium">
+                {" "}
+                A20745623Z-08-10-23-mfod2ChZRpsZRGQMEfne.pdf
+              </span>
+            </div>
+            <div className="flex items-center mb-3">
+              <Lucide
+                icon="Clipboard"
+                className="w-4 h-4 mr-2 text-slate-500"
+              />
+              ID Card:
+              <span className="text-primary text-sm font-medium">
+                {" "}
+                myid-08-10-23-mfod2ChZRpsZRGQMEfne.pdf
+              </span>
+            </div>
+          </div>
+          {/* Details */}
         </div>
         {/* END: Profile Cover */}
+
         {/* BEGIN: Profile Content */}
         <div className="col-span-12 xl:col-span-8">
           <div className="p-5 box intro-y">
@@ -252,7 +397,7 @@ function Main() {
               <div className="flex pb-5 mb-5 border-b border-dashed border-slate-200 last:border-b-0 last:pb-0 last:mb-0">
                 <div className="">
                   <div className="text-4xl text-blue-900 font-medium">
-                    Kshs. {riderProfile[0]?.lifetimeEarnings || "Loading..."}
+                    Kshs. {riderProfile[0]?.lifetimeEarnings || "Zero"}
                   </div>
                 </div>
               </div>
@@ -268,7 +413,7 @@ function Main() {
               <div className="flex pb-5 mb-5 border-b border-dashed border-slate-200 last:border-b-0 last:pb-0 last:mb-0">
                 <div className="">
                   <div className="text-4xl text-blue-900 font-medium">
-                    {riderProfile[0]?.totalRidesTaken || "Loading..."}
+                    {riderProfile[0]?.totalRidesTaken || "Zero"}
                   </div>
                 </div>
               </div>

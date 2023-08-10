@@ -28,6 +28,7 @@ import ViewRide from "../pages/ViewRide";
 
 // Drivers
 import Drivers from "../pages/Drivers";
+import DriversApplications from "../pages/DriversApplications";
 import SearchDriver from "../pages/SearchDriver";
 import ViewDriver from "../pages/ViewDriver";
 
@@ -173,6 +174,10 @@ function Router() {
         {
           path: "/drivers-data-list",
           element: <Drivers />,
+        },
+        {
+          path: "/drivers-applications",
+          element: <DriversApplications />,
         },
         {
           path: "/search-driver",
