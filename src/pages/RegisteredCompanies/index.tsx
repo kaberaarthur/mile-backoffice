@@ -74,7 +74,7 @@ function Main() {
             <Table.Thead>
               <Table.Tr>
                 <Table.Th className="border-b-0 whitespace-nowrap">
-                  COMPANY ID
+                  WALLET TOTAL
                 </Table.Th>
                 <Table.Th className="border-b-0 whitespace-nowrap">
                   COMPANY NAME
@@ -94,12 +94,7 @@ function Main() {
               {ridersData.map((rider, riderKey) => (
                 <Table.Tr key={riderKey} className="intro-x">
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-center bg-white border border-r-0 border-l-0 first:border-l last:border-r border-slate-200 dark:bg-darkmode-600 dark:border-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                    <a
-                      href={"/view-report/" + rider.id}
-                      className="text-blue-700"
-                    >
-                      {rider.id}
-                    </a>
+                    <p className="text-blue-700">{rider.totalWallet}</p>
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md bg-white border border-r-0 border-l-0 first:border-l last:border-r border-slate-200 dark:bg-darkmode-600 dark:border-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     {rider.companyName}
@@ -112,13 +107,10 @@ function Main() {
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-center bg-white border border-r-0 border-l-0 first:border-l last:border-r border-slate-200 dark:bg-darkmode-600 dark:border-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     <a
-                      href={"/view-report/" + rider.id}
+                      href={"/view-company/" + rider.id}
                       className="text-blue-700"
                     >
-                      <Button
-                        variant="primary"
-                        onClick={() => deleteCoupon(rider.id)}
-                      >
+                      <Button variant="primary">
                         {isLoading ? (
                           <LoadingIcon
                             icon="oval"
@@ -126,7 +118,7 @@ function Main() {
                             color="white"
                           />
                         ) : (
-                          "Delete Company"
+                          "View Company"
                         )}
                       </Button>
                     </a>

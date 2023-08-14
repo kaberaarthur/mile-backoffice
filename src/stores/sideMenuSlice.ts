@@ -102,7 +102,7 @@ const initialState: SideMenuState = {
         },
         {
           icon: "Activity",
-          pathname: "/reports-solved",
+          pathname: "/add-company",
           title: "Add Company",
         },
       ],
