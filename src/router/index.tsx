@@ -41,6 +41,9 @@ import Reports from "../pages/Reports";
 import ReportsSolved from "../pages/ReportsSolved";
 import ViewReport from "../pages/ViewReport";
 
+// Corporate
+import RegisteredCompanies from "../pages/RegisteredCompanies";
+
 import CrudForm from "../pages/CrudForm";
 import WizardLayout1 from "../pages/WizardLayout1";
 import WizardLayout2 from "../pages/WizardLayout2";
@@ -221,6 +224,13 @@ function Router() {
           element: <ViewReport />,
         },
         // End Reports
+
+        // Start Corporate
+        {
+          path: "/companies-list",
+          element: <RegisteredCompanies />,
+        },
+        // End Corporate
 
         {
           path: "/crud-form",

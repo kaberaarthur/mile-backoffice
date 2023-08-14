@@ -97,7 +97,7 @@ const initialState: SideMenuState = {
       subMenu: [
         {
           icon: "Activity",
-          pathname: "/reports",
+          pathname: "/companies-list",
           title: "Registered Corporates",
         },
         {
