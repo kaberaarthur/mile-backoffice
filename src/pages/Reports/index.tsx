@@ -126,10 +126,7 @@ function Main() {
                       href={"/view-report/" + rider.id}
                       className="text-blue-700"
                     >
-                      <Button
-                        variant="primary"
-                        onClick={() => deleteCoupon(rider.id)}
-                      >
+                      <Button variant="primary">
                         {isLoading ? (
                           <LoadingIcon
                             icon="oval"

@@ -25,8 +25,7 @@ function Main() {
 
   useEffect(() => {
     const unsubscribe = db
-      .collection("reports")
-      .where("resolved", "==", false)
+      .collection("companies")
       .onSnapshot((snapshot: firebase.firestore.QuerySnapshot) => {
         const fetchedRiders: Rider[] = [];
         snapshot.forEach((doc) => {
@@ -57,7 +56,7 @@ function Main() {
   const deleteCoupon = async (riderId: string): Promise<void> => {
     try {
       const firestore = firebase.firestore();
-      const couponRef = firestore.collection("reports").doc(riderId);
+      const couponRef = firestore.collection("companies").doc(riderId);
       await couponRef.delete();
       console.log(`Coupon with ID ${riderId} deleted successfully.`);
     } catch (error) {
@@ -75,16 +74,16 @@ function Main() {
             <Table.Thead>
               <Table.Tr>
                 <Table.Th className="border-b-0 whitespace-nowrap">
-                  REPORT ID
+                  COMPANY ID
                 </Table.Th>
                 <Table.Th className="border-b-0 whitespace-nowrap">
-                  DRIVER PHONE
+                  COMPANY NAME
                 </Table.Th>
                 <Table.Th className="text-center border-b-0 whitespace-nowrap">
-                  RIDER PHONE
+                  COMPANY EMAIL
                 </Table.Th>
                 <Table.Th className="text-center border-b-0 whitespace-nowrap">
-                  REPORT DATE
+                  COMPANY PHONE
                 </Table.Th>
                 <Table.Th className="text-center border-b-0 whitespace-nowrap">
                   ACTION
@@ -103,23 +102,13 @@ function Main() {
                     </a>
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md bg-white border border-r-0 border-l-0 first:border-l last:border-r border-slate-200 dark:bg-darkmode-600 dark:border-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                    <a
-                      href={"/view-driver/" + rider.driverID}
-                      className="text-blue-700"
-                    >
-                      {rider.driverPhone}
-                    </a>
+                    {rider.companyName}
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-center bg-white border border-r-0 border-l-0 first:border-l last:border-r border-slate-200 dark:bg-darkmode-600 dark:border-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                    <a
-                      href={"/view-rider/" + rider.riderID}
-                      className="text-blue-700"
-                    >
-                      {rider.riderPhone}
-                    </a>
+                    {rider.phone}
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-center bg-white border border-r-0 border-l-0 first:border-l last:border-r border-slate-200 dark:bg-darkmode-600 dark:border-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                    {formatDate(rider.timeReported)}
+                    {rider.email}
                   </Table.Td>
                   <Table.Td className="first:rounded-l-md last:rounded-r-md text-center bg-white border border-r-0 border-l-0 first:border-l last:border-r border-slate-200 dark:bg-darkmode-600 dark:border-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     <a
@@ -137,7 +126,7 @@ function Main() {
                             color="white"
                           />
                         ) : (
-                          "View Report"
+                          "Delete Company"
                         )}
                       </Button>
                     </a>
