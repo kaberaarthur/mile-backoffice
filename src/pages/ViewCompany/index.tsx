@@ -10,9 +10,19 @@ import {
   FormSelect,
 } from "../../base-components/Form";
 import fakerData from "../../utils/faker";
-import _ from "lodash";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import LoadingIcon from "../../base-components/LoadingIcon";
+import { FormSwitch } from "../../base-components/Form";
+
+import _ from "lodash";
+import {
+  PreviewComponent,
+  Preview,
+  Source,
+  Highlight,
+} from "../../base-components/PreviewComponent";
+
 import { db, auth } from "../../../firebaseConfig";
 import { DocumentData } from "firebase/firestore";
 import firebase from "firebase/compat/app";
@@ -20,6 +30,21 @@ import firebase from "firebase/compat/app";
 function Main() {
   const { id } = useParams();
   const [ride, setRide] = useState<DocumentData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const formatDate = (timestamp: any) => {
+    const firebaseTimestamp = timestamp.toDate();
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      timeZoneName: "short",
+    };
+    return firebaseTimestamp.toLocaleDateString(undefined, options);
+  };
 
   const [categories, setCategories] = useState([
     "Photography",
@@ -62,10 +87,12 @@ function Main() {
   }, [id]);
 
   // Function to convert Firestore timestamp to a human-readable date
+  /*
   const formatDate = (timestamp: firebase.firestore.Timestamp) => {
     const date = new Date(timestamp.seconds * 1000); // Convert seconds to milliseconds
     return date.toLocaleString(); // You can use other date formatting methods as well
   };
+  */
 
   return (
     <>
@@ -97,11 +124,259 @@ function Main() {
                 icon="Clipboard"
                 className="w-4 h-4 mr-2 text-slate-500"
               />
-              Created: {" " + ride[0]?.phone}
+              Created:{" "}
+              {ride[0]?.dateCreated
+                ? formatDate(ride[0]?.dateCreated)
+                : "Unknown"}
+            </div>
+            <div className="flex items-center">
+              <Lucide
+                icon="Clipboard"
+                className="w-4 h-4 mr-2 text-slate-500"
+              />
+              Remaining Balance: {" " + ride[0]?.totalWallet}
             </div>
           </div>
         </div>
         {/* END: Product Detail Side Menu */}
+        <div className="col-span-12 intro-y lg:col-span-12">
+          {/* BEGIN: Responsive Table */}
+          <PreviewComponent className="mt-5 intro-y box">
+            {({ toggle }) => (
+              <>
+                <div className="flex flex-col items-center p-5 border-b sm:flex-row border-slate-200/60">
+                  <h2 className="mr-auto text-base font-medium">
+                    Registered Riders
+                  </h2>
+                  <FormSwitch className="w-full mt-3 sm:w-auto sm:ml-auto sm:mt-0">
+                    <Button variant="primary">
+                      {isLoading ? (
+                        <LoadingIcon
+                          icon="oval"
+                          className="w-8 h-8"
+                          color="white"
+                        />
+                      ) : (
+                        "Add Rider"
+                      )}
+                    </Button>
+                  </FormSwitch>
+                </div>
+                <div className="p-5">
+                  <Preview>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <Table.Thead>
+                          <Table.Tr>
+                            <Table.Th className="whitespace-nowrap">#</Table.Th>
+                            <Table.Th className="whitespace-nowrap">
+                              Name
+                            </Table.Th>
+                            <Table.Th className="whitespace-nowrap">
+                              Phone Number
+                            </Table.Th>
+                            <Table.Th className="whitespace-nowrap">
+                              Email
+                            </Table.Th>
+                            <Table.Th className="whitespace-nowrap">
+                              Total Rides
+                            </Table.Th>
+                            <Table.Th className="whitespace-nowrap">
+                              Wallet Ballance
+                            </Table.Th>
+                            <Table.Th className="whitespace-nowrap">
+                              Action
+                            </Table.Th>
+                          </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>
+                          <Table.Tr>
+                            <Table.Td className="whitespace-nowrap">1</Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              Angelina Jolie
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              +254790485731
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              angelinajolie@gmail.com
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              27
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              860
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              <Button variant="primary">
+                                {isLoading ? (
+                                  <LoadingIcon
+                                    icon="oval"
+                                    className="w-8 h-8"
+                                    color="white"
+                                  />
+                                ) : (
+                                  "View Company"
+                                )}
+                              </Button>
+                            </Table.Td>
+                          </Table.Tr>
+                          <Table.Tr>
+                            <Table.Td className="whitespace-nowrap">2</Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              Jane Wo
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              +14695818834
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              wo@gmail.com
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              13
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              1650
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              <Button variant="primary">
+                                {isLoading ? (
+                                  <LoadingIcon
+                                    icon="oval"
+                                    className="w-8 h-8"
+                                    color="white"
+                                  />
+                                ) : (
+                                  "View Company"
+                                )}
+                              </Button>
+                            </Table.Td>
+                          </Table.Tr>
+                          <Table.Tr>
+                            <Table.Td className="whitespace-nowrap">3</Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              Brad Pitt
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              +254703557082
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              pittb@gmail.com
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">2</Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              2910
+                            </Table.Td>
+                            <Table.Td className="whitespace-nowrap">
+                              <Button variant="primary">
+                                {isLoading ? (
+                                  <LoadingIcon
+                                    icon="oval"
+                                    className="w-8 h-8"
+                                    color="white"
+                                  />
+                                ) : (
+                                  "View Company"
+                                )}
+                              </Button>
+                            </Table.Td>
+                          </Table.Tr>
+                        </Table.Tbody>
+                      </Table>
+                    </div>
+                  </Preview>
+                  <Source>
+                    <Highlight>
+                      {`
+                <div className="overflow-x-auto">
+                  <Table>
+                    <Table.Thead>
+                      <Table.Tr>
+                        <Table.Th className="whitespace-nowrap">#</Table.Th>
+                        <Table.Th className="whitespace-nowrap">
+                          First Name
+                        </Table.Th>
+                        <Table.Th className="whitespace-nowrap">
+                          Last Name
+                        </Table.Th>
+                        <Table.Th className="whitespace-nowrap">
+                          Username
+                        </Table.Th>
+                        <Table.Th className="whitespace-nowrap">
+                          Email
+                        </Table.Th>
+                        <Table.Th className="whitespace-nowrap">
+                          Address
+                        </Table.Th>
+                      </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                      <Table.Tr>
+                        <Table.Td className="whitespace-nowrap">1</Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          Angelina
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          Jolie
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          @angelinajolie
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          angelinajolie@gmail.com
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          260 W. Storm Street New York, NY 10025.
+                        </Table.Td>
+                      </Table.Tr>
+                      <Table.Tr>
+                        <Table.Td className="whitespace-nowrap">2</Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          Brad
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          Pitt
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          @bradpitt
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          bradpitt@gmail.com
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          47 Division St. Buffalo, NY 14241.
+                        </Table.Td>
+                      </Table.Tr>
+                      <Table.Tr>
+                        <Table.Td className="whitespace-nowrap">3</Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          Charlie
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          Hunnam
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          @charliehunnam
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          charliehunnam@gmail.com
+                        </Table.Td>
+                        <Table.Td className="whitespace-nowrap">
+                          8023 Amerige Street Harriman, NY 10926.
+                        </Table.Td>
+                      </Table.Tr>
+                    </Table.Tbody>
+                  </Table>
+                </div>
+                `}
+                    </Highlight>
+                  </Source>
+                </div>
+              </>
+            )}
+          </PreviewComponent>
+          {/* END: Responsive Table */}
+        </div>
       </div>
     </>
   );

@@ -329,10 +329,7 @@ function Main() {
                 <div className="p-5">
                   <Preview>
                     <div className="overflow-x-auto">
-                      <Table
-                        bordered
-                        hover
-                      >
+                      <Table bordered hover>
                         <Table.Thead>
                           <Table.Tr>
                             <Table.Th className="whitespace-nowrap">#</Table.Th>
