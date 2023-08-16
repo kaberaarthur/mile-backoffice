@@ -28,6 +28,8 @@ import { db, auth } from "../../../firebaseConfig";
 import { DocumentData } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 
+type RiderData = { [key: string]: any };
+
 function Main() {
   const { id } = useParams();
   const [ride, setRide] = useState<DocumentData[]>([]);
@@ -35,6 +37,24 @@ function Main() {
   const [headerFooterModalPreview, setHeaderFooterModalPreview] =
     useState(false);
   const sendButtonRef = useRef(null);
+  const [searchedState, setSearchedState] = useState<boolean>(false);
+  const [riders, setRiders] = useState<RiderData[]>([]);
+
+  useEffect(() => {
+    const unsubscribe = db
+      .collection("riders")
+      .where("companyWalletID", "==", id)
+      .onSnapshot((snapshot) => {
+        const fetchedRiders: RiderData[] = [];
+        snapshot.forEach((doc) => {
+          fetchedRiders.push(doc.data());
+        });
+        setRiders(fetchedRiders);
+        console.log("Company Riders: " + fetchedRiders);
+      });
+
+    return () => unsubscribe();
+  }, [id]);
 
   const formatDate = (timestamp: any) => {
     const firebaseTimestamp = timestamp.toDate();
@@ -180,15 +200,8 @@ function Main() {
                         <Dialog.Panel>
                           <Dialog.Title>
                             <h2 className="mr-auto text-base font-medium">
-                              Broadcast Message
+                              Search & Add Riders
                             </h2>
-                            <Button
-                              variant="outline-secondary"
-                              className="hidden sm:flex"
-                            >
-                              <Lucide icon="File" className="w-4 h-4 mr-2" />{" "}
-                              Download Docs
-                            </Button>
                             <Menu className="sm:hidden">
                               <Menu.Button className="block w-5 h-5">
                                 <Lucide
@@ -208,60 +221,43 @@ function Main() {
                             </Menu>
                           </Dialog.Title>
                           <Dialog.Description className="grid grid-cols-12 gap-4 gap-y-3">
-                            <div className="col-span-12 sm:col-span-6">
-                              <FormLabel htmlFor="modal-form-1">From</FormLabel>
+                            <div className="col-span-12 sm:col-span-12">
+                              <FormLabel htmlFor="modal-form-1">
+                                Email Address
+                              </FormLabel>
                               <FormInput
                                 id="modal-form-1"
                                 type="text"
                                 placeholder="example@gmail.com"
                               />
                             </div>
-                            <div className="col-span-12 sm:col-span-6">
-                              <FormLabel htmlFor="modal-form-2">To</FormLabel>
-                              <FormInput
-                                id="modal-form-2"
-                                type="text"
-                                placeholder="example@gmail.com"
-                              />
+                            <div className="col-span-12 sm:col-span-12 mt-4">
+                              <FormLabel htmlFor="modal-form-1">
+                                Email:{" "}
+                                <span className="text-primary">
+                                  {" "}
+                                  arthurkabera@gmail.com{" "}
+                                </span>
+                              </FormLabel>
                             </div>
-                            <div className="col-span-12 sm:col-span-6">
-                              <FormLabel htmlFor="modal-form-3">
-                                Subject
+                            <div className="col-span-12 sm:col-span-12 mt-1">
+                              <FormLabel htmlFor="modal-form-1">
+                                Phone:{" "}
+                                <span className="text-primary">
+                                  {" "}
+                                  +254790485731{" "}
+                                </span>
+                              </FormLabel>
+                            </div>
+                            <div className="col-span-12 sm:col-span-12">
+                              <FormLabel htmlFor="modal-form-1">
+                                Wallet Amount
                               </FormLabel>
                               <FormInput
-                                id="modal-form-3"
+                                id="modal-form-1"
                                 type="text"
-                                placeholder="Important Meeting"
+                                placeholder="100"
                               />
-                            </div>
-                            <div className="col-span-12 sm:col-span-6">
-                              <FormLabel htmlFor="modal-form-4">
-                                Has the Words
-                              </FormLabel>
-                              <FormInput
-                                id="modal-form-4"
-                                type="text"
-                                placeholder="Job, Work, Documentation"
-                              />
-                            </div>
-                            <div className="col-span-12 sm:col-span-6">
-                              <FormLabel htmlFor="modal-form-5">
-                                Doesn't Have
-                              </FormLabel>
-                              <FormInput
-                                id="modal-form-5"
-                                type="text"
-                                placeholder="Job, Work, Documentation"
-                              />
-                            </div>
-                            <div className="col-span-12 sm:col-span-6">
-                              <FormLabel htmlFor="modal-form-6">Size</FormLabel>
-                              <FormSelect id="modal-form-6">
-                                <option>10</option>
-                                <option>25</option>
-                                <option>35</option>
-                                <option>50</option>
-                              </FormSelect>
                             </div>
                           </Dialog.Description>
                           <Dialog.Footer>
@@ -281,7 +277,7 @@ function Main() {
                               className="w-20"
                               ref={sendButtonRef}
                             >
-                              Send
+                              Search
                             </Button>
                           </Dialog.Footer>
                         </Dialog.Panel>
