@@ -29,21 +29,13 @@ import { DocumentData } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 
 type RiderData = { [key: string]: any };
+type RideData = { [key: string]: any };
 
 function Main() {
   const { id } = useParams();
   const [rider, setRider] = useState<DocumentData[]>([]);
+  const [rides, setRides] = useState<RiderData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [headerFooterModalPreview, setHeaderFooterModalPreview] =
-    useState(false);
-  const sendButtonRef = useRef(null);
-  const [searchedState, setSearchedState] = useState<boolean>(false);
-  const [riders, setRiders] = useState<RiderData[]>([]);
-  const [email, setEmail] = useState<string>("");
-  const [searchError, setSearchError] = useState<string>("");
-  const [searchResults, setSearchResults] = useState<string>("");
-  const [amountError, setAmountError] = useState<string>("");
-  const [walletAmount, setWalletAmount] = useState<number | string>("");
 
   // Format Date from Timestamp to Human Readable Format
   const formatDate = (timestamp: any) => {
@@ -60,6 +52,29 @@ function Main() {
     return firebaseTimestamp.toLocaleDateString(undefined, options);
   };
 
+  // Get All Rides associated with the Rider and Company
+  const getRides = async (companyWalletID: string): Promise<void> => {
+    console.log(companyWalletID);
+
+    try {
+      const ridesSnapshot = await db
+        .collection("rides")
+        .where("companyWalletID", "==", companyWalletID)
+        .where("riderId", "==", id)
+        .get();
+
+      const fetchedRides: RideData[] = [];
+      ridesSnapshot.forEach((doc) => {
+        fetchedRides.push({ id: doc.id, ...doc.data() });
+      });
+
+      setRides(fetchedRides);
+      console.log("Fetched Rides: ", fetchedRides);
+    } catch (error) {
+      console.error("Error fetching rides:", error);
+    }
+  };
+
   // Get Details about the Rider
   useEffect(() => {
     const fetchRiderProfile = async () => {
@@ -74,6 +89,8 @@ function Main() {
               const data = doc.data() as DocumentData | undefined; // Explicitly cast to DocumentData or undefined
               if (data) {
                 setRider([data]); // Update the state with the array containing the single data element
+
+                getRides(data.companyWalletID);
               } else {
                 console.log("No such document Exists!");
               }
@@ -125,13 +142,6 @@ function Main() {
               />
               Wallet Balance: {" " + rider[0]?.companyWalletBalance}
             </div>
-            <div className="flex items-center">
-              <Lucide
-                icon="Clipboard"
-                className="w-4 h-4 mr-2 text-slate-500"
-              />
-              Wallet Balance: {" " + rider[0]?.companyWalletID}
-            </div>
           </div>
         </div>
         {/* END: Product Detail Side Menu */}
@@ -156,45 +166,37 @@ function Main() {
                               Name
                             </Table.Th>
                             <Table.Th className="whitespace-nowrap">
-                              Phone Number
+                              Origin
                             </Table.Th>
                             <Table.Th className="whitespace-nowrap">
-                              Email
+                              Destination
                             </Table.Th>
                             <Table.Th className="whitespace-nowrap">
-                              Wallet Ballance
-                            </Table.Th>
-                            <Table.Th className="whitespace-nowrap">
-                              Action
+                              Date
                             </Table.Th>
                           </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
-                          {/*riders.map((rider, index) => (
+                          {rides.map((ride, index) => (
                             <Table.Tr key={index}>
                               <Table.Td className="whitespace-nowrap">
                                 {index + 1}
                               </Table.Td>
                               <Table.Td className="whitespace-nowrap">
-                                {rider?.name}
+                                {ride?.rideOrigin[0].description}
                               </Table.Td>
                               <Table.Td className="whitespace-nowrap">
-                                {rider?.phone}
+                                {ride?.rideDestination[0].description}
                               </Table.Td>
                               <Table.Td className="whitespace-nowrap">
-                                {rider?.email}
+                                {formatDate(ride?.dateCreated)}
                               </Table.Td>
 
                               <Table.Td className="whitespace-nowrap">
-                                {rider?.companyWalletBalance}
-                              </Table.Td>
-                              <Table.Td className="whitespace-nowrap">
-                                <Button variant="primary">
-                                  Rider Activity
-                                </Button>
+                                {ride?.totalClientPays}
                               </Table.Td>
                             </Table.Tr>
-                          ))*/}
+                          ))}
                         </Table.Tbody>
                       </Table>
                     </div>

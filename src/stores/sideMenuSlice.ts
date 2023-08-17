@@ -107,6 +107,7 @@ const initialState: SideMenuState = {
         },
       ],
     },
+    /*
     {
       icon: "Calendar",
       pathname: "/calendar",
@@ -384,6 +385,7 @@ const initialState: SideMenuState = {
         },
       ],
     },
+    */
   ],
 };
 
