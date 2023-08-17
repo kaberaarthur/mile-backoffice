@@ -107,6 +107,37 @@ function Main() {
     setIsLoading(false);
   };
 
+  // Subtract the Amount given to the New Rider Added to Company's Wallet
+  const updateCompanyDocument = async () => {
+    try {
+      const companyDocRef = db.collection("companies").doc(id);
+      const companyDoc = await companyDocRef.get();
+
+      if (!companyDoc.exists) {
+        console.error("Company document not found");
+        return;
+      }
+
+      const numericWalletAmount =
+        typeof walletAmount === "string"
+          ? parseFloat(walletAmount)
+          : walletAmount;
+
+      const companyData = companyDoc.data();
+
+      const updatedTotalWallet = companyData?.totalWallet - numericWalletAmount;
+
+      await companyDocRef.update({
+        totalWallet: updatedTotalWallet,
+      });
+
+      console.log("Company document updated successfully");
+      // Handle other logic as needed
+    } catch (error) {
+      console.error("Error updating company document:", error);
+    }
+  };
+
   const updateRiderDocument = async () => {
     setIsLoading(true);
     if (rider.length === 0) {
@@ -130,8 +161,11 @@ function Main() {
       await db.collection("riders").doc(rider[0].id).update({
         companyWalletUser: true,
         companyWalletID: id,
-        companyWalletBalance: walletAmount,
+        companyWalletBalance: numericWalletAmount,
       });
+
+      // Update the company document by subtracting walletAmount
+      await updateCompanyDocument();
 
       // Log success or perform other actions
       console.log("Rider document updated successfully");
@@ -466,15 +500,7 @@ function Main() {
                               </Table.Td>
                               <Table.Td className="whitespace-nowrap">
                                 <Button variant="primary">
-                                  {isLoading ? (
-                                    <LoadingIcon
-                                      icon="oval"
-                                      className="w-8 h-8"
-                                      color="white"
-                                    />
-                                  ) : (
-                                    "View Rides"
-                                  )}
+                                  Rider Activity
                                 </Button>
                               </Table.Td>
                             </Table.Tr>
