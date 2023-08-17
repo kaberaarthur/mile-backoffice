@@ -45,6 +45,7 @@ import ViewReport from "../pages/ViewReport";
 import RegisteredCompanies from "../pages/RegisteredCompanies";
 import AddCompany from "../pages/AddCompany";
 import ViewCompany from "../pages/ViewCompany";
+import ViewRiderActivity from "../pages/ViewRiderActivity";
 
 import CrudForm from "../pages/CrudForm";
 import WizardLayout1 from "../pages/WizardLayout1";
@@ -239,6 +240,10 @@ function Router() {
         {
           path: "/view-company/:id",
           element: <ViewCompany />,
+        },
+        {
+          path: "/view-rider-activity/:id",
+          element: <ViewRiderActivity />,
         },
         // End Corporate
 

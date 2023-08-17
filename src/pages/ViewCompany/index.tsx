@@ -190,10 +190,14 @@ function Main() {
       .onSnapshot((snapshot) => {
         const fetchedRiders: RiderData[] = [];
         snapshot.forEach((doc) => {
-          fetchedRiders.push(doc.data());
+          const riderData = doc.data();
+          fetchedRiders.push({
+            id: doc.id, // Add the document ID to the rider object
+            ...riderData, // Spread the rest of the rider data
+          });
         });
         setRiders(fetchedRiders);
-        console.log("Company Riders: " + fetchedRiders);
+        console.log("Company Riders: ", fetchedRiders);
       });
 
     return () => unsubscribe();
@@ -499,9 +503,11 @@ function Main() {
                                 {rider?.companyWalletBalance}
                               </Table.Td>
                               <Table.Td className="whitespace-nowrap">
-                                <Button variant="primary">
-                                  Rider Activity
-                                </Button>
+                                <a href={"/view-rider-activity/" + rider?.id}>
+                                  <Button variant="primary">
+                                    Rider Activity
+                                  </Button>
+                                </a>
                               </Table.Td>
                             </Table.Tr>
                           ))}
