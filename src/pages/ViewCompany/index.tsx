@@ -10,7 +10,7 @@ import {
   FormSelect,
 } from "../../base-components/Form";
 import fakerData from "../../utils/faker";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { useParams } from "react-router-dom";
 import LoadingIcon from "../../base-components/LoadingIcon";
 import { FormSwitch } from "../../base-components/Form";
@@ -39,6 +39,115 @@ function Main() {
   const sendButtonRef = useRef(null);
   const [searchedState, setSearchedState] = useState<boolean>(false);
   const [riders, setRiders] = useState<RiderData[]>([]);
+  const [rider, setRider] = useState<DocumentData[]>([]);
+  const [email, setEmail] = useState<string>("");
+  const [searchError, setSearchError] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<string>("");
+  const [amountError, setAmountError] = useState<string>("");
+  const [walletAmount, setWalletAmount] = useState<number | string>("");
+
+  // Handle Email Input
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  // Handle Wallet Amount Input
+  const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setWalletAmount(e.target.value);
+  };
+
+  // Search Riders to Add Them
+  const handleSearch = async () => {
+    setIsLoading(true);
+    setSearchResults(""); // Reset previous search results
+    setRider([]); // Clear rider data
+    setSearchError(""); // Clear search error
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    // Check if email is empty or formatted correctly
+    if (!emailPattern.test(email)) {
+      setSearchError("Invalid email format");
+      return;
+    } else {
+      setSearchError("");
+    }
+
+    try {
+      let querySnapshot;
+
+      // Search based on email
+      querySnapshot = await db
+        .collection("riders")
+        .where("email", "==", email)
+        .where("companyWalletUser", "==", false)
+        .get();
+
+      if (querySnapshot.empty) {
+        setSearchError("User with that Email Not Found");
+      } else {
+        setSearchedState(true);
+        const results: DocumentData[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data() as DocumentData;
+          data.id = doc.id; // Include doc.id in the data object
+          results.push(data);
+        });
+
+        if (results.length > 0) {
+          setRider([results[0]]); // Set the rider state with the first document found
+        }
+      }
+    } catch (error) {
+      setSearchError("An error occurred during search.");
+      console.error("Error occurred during search:", error);
+      setSearchedState(false);
+    }
+
+    setIsLoading(false);
+  };
+
+  const updateRiderDocument = async () => {
+    setIsLoading(true);
+    if (rider.length === 0) {
+      setAmountError("No User has been Selected");
+      return; // Exit the function if no rider is found
+    }
+
+    // Ensure amount is not Empty or Below 100
+    const numericWalletAmount =
+      typeof walletAmount === "string"
+        ? parseFloat(walletAmount)
+        : walletAmount;
+
+    if (numericWalletAmount < 100 || numericWalletAmount === 0) {
+      setAmountError("The Amount must be above 100");
+      return;
+    }
+
+    try {
+      // Update the rider document in Firestore
+      await db.collection("riders").doc(rider[0].id).update({
+        companyWalletUser: true,
+        companyWalletID: id,
+        companyWalletBalance: walletAmount,
+      });
+
+      // Log success or perform other actions
+      console.log("Rider document updated successfully");
+      setHeaderFooterModalPreview(false);
+      setAmountError("");
+      setSearchResults(""); // Reset previous search results
+      setRider([]); // Clear rider data
+      setSearchError(""); // Clear search error
+      setEmail(""); // Clear Email Address
+      setWalletAmount(""); // Clear Wallet Amount
+    } catch (error) {
+      console.error("Error updating rider document:", error);
+    }
+
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     const unsubscribe = db
@@ -110,14 +219,6 @@ function Main() {
     fetchRiderProfile();
   }, [id]);
 
-  // Function to convert Firestore timestamp to a human-readable date
-  /*
-  const formatDate = (timestamp: firebase.firestore.Timestamp) => {
-    const date = new Date(timestamp.seconds * 1000); // Convert seconds to milliseconds
-    return date.toLocaleString(); // You can use other date formatting methods as well
-  };
-  */
-
   return (
     <>
       <div className="grid grid-cols-12 gap-5 mt-5">
@@ -179,13 +280,13 @@ function Main() {
                         <Button
                           as="a"
                           href="#"
-                          variant="primary"
+                          variant="warning"
                           onClick={(event: React.MouseEvent) => {
                             event.preventDefault();
                             setHeaderFooterModalPreview(true);
                           }}
                         >
-                          Show Modal
+                          Add Rider
                         </Button>
                       </div>
                       {/* END: Modal Toggle */}
@@ -220,6 +321,7 @@ function Main() {
                               </Menu.Items>
                             </Menu>
                           </Dialog.Title>
+
                           <Dialog.Description className="grid grid-cols-12 gap-4 gap-y-3">
                             <div className="col-span-12 sm:col-span-12">
                               <FormLabel htmlFor="modal-form-1">
@@ -229,23 +331,18 @@ function Main() {
                                 id="modal-form-1"
                                 type="text"
                                 placeholder="example@gmail.com"
+                                value={email}
+                                onChange={handleEmailChange}
                               />
+                              <p className="text-xs text-red-600">
+                                {searchError}
+                              </p>
                             </div>
                             <div className="col-span-12 sm:col-span-12 mt-4">
                               <FormLabel htmlFor="modal-form-1">
-                                Email:{" "}
                                 <span className="text-primary">
-                                  {" "}
-                                  arthurkabera@gmail.com{" "}
-                                </span>
-                              </FormLabel>
-                            </div>
-                            <div className="col-span-12 sm:col-span-12 mt-1">
-                              <FormLabel htmlFor="modal-form-1">
-                                Phone:{" "}
-                                <span className="text-primary">
-                                  {" "}
-                                  +254790485731{" "}
+                                  {"User Found: "}
+                                  {rider[0]?.phone}
                                 </span>
                               </FormLabel>
                             </div>
@@ -257,7 +354,31 @@ function Main() {
                                 id="modal-form-1"
                                 type="text"
                                 placeholder="100"
+                                value={walletAmount}
+                                onChange={handleAmountChange}
                               />
+                            </div>
+                            <div className="col-span-12 sm:col-span-12">
+                              <p className="text-xs text-red-600 mb-2">
+                                {amountError}
+                              </p>
+                              <Button
+                                type="button"
+                                variant="pending"
+                                className="w-full mr-1"
+                                disabled={rider.length === 0}
+                                onClick={updateRiderDocument}
+                              >
+                                {isLoading ? (
+                                  <LoadingIcon
+                                    icon="oval"
+                                    className="w-8 h-8"
+                                    color="white"
+                                  />
+                                ) : (
+                                  "Add Rider"
+                                )}
+                              </Button>
                             </div>
                           </Dialog.Description>
                           <Dialog.Footer>
@@ -266,6 +387,11 @@ function Main() {
                               variant="outline-secondary"
                               onClick={() => {
                                 setHeaderFooterModalPreview(false);
+                                setSearchResults(""); // Reset previous search results
+                                setRider([]); // Clear rider data
+                                setSearchError(""); // Clear search error
+                                setEmail("");
+                                setWalletAmount("");
                               }}
                               className="w-20 mr-1"
                             >
@@ -276,8 +402,17 @@ function Main() {
                               type="button"
                               className="w-20"
                               ref={sendButtonRef}
+                              onClick={handleSearch}
                             >
-                              Search
+                              {isLoading ? (
+                                <LoadingIcon
+                                  icon="oval"
+                                  className="w-8 h-8"
+                                  color="white"
+                                />
+                              ) : (
+                                "Search"
+                              )}
                             </Button>
                           </Dialog.Footer>
                         </Dialog.Panel>
@@ -303,9 +438,6 @@ function Main() {
                               Email
                             </Table.Th>
                             <Table.Th className="whitespace-nowrap">
-                              Total Rides
-                            </Table.Th>
-                            <Table.Th className="whitespace-nowrap">
                               Wallet Ballance
                             </Table.Th>
                             <Table.Th className="whitespace-nowrap">
@@ -314,97 +446,39 @@ function Main() {
                           </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
-                          <Table.Tr>
-                            <Table.Td className="whitespace-nowrap">1</Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              Angelina Jolie
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              +254790485731
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              angelinajolie@gmail.com
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              27
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              860
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              <Button variant="primary">
-                                {isLoading ? (
-                                  <LoadingIcon
-                                    icon="oval"
-                                    className="w-8 h-8"
-                                    color="white"
-                                  />
-                                ) : (
-                                  "View Company"
-                                )}
-                              </Button>
-                            </Table.Td>
-                          </Table.Tr>
-                          <Table.Tr>
-                            <Table.Td className="whitespace-nowrap">2</Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              Jane Wo
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              +14695818834
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              wo@gmail.com
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              13
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              1650
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              <Button variant="primary">
-                                {isLoading ? (
-                                  <LoadingIcon
-                                    icon="oval"
-                                    className="w-8 h-8"
-                                    color="white"
-                                  />
-                                ) : (
-                                  "View Company"
-                                )}
-                              </Button>
-                            </Table.Td>
-                          </Table.Tr>
-                          <Table.Tr>
-                            <Table.Td className="whitespace-nowrap">3</Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              Brad Pitt
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              +254703557082
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              pittb@gmail.com
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">2</Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              2910
-                            </Table.Td>
-                            <Table.Td className="whitespace-nowrap">
-                              <Button variant="primary">
-                                {isLoading ? (
-                                  <LoadingIcon
-                                    icon="oval"
-                                    className="w-8 h-8"
-                                    color="white"
-                                  />
-                                ) : (
-                                  "View Company"
-                                )}
-                              </Button>
-                            </Table.Td>
-                          </Table.Tr>
+                          {riders.map((rider, index) => (
+                            <Table.Tr key={index}>
+                              <Table.Td className="whitespace-nowrap">
+                                {index + 1}
+                              </Table.Td>
+                              <Table.Td className="whitespace-nowrap">
+                                {rider?.name}
+                              </Table.Td>
+                              <Table.Td className="whitespace-nowrap">
+                                {rider?.phone}
+                              </Table.Td>
+                              <Table.Td className="whitespace-nowrap">
+                                {rider?.email}
+                              </Table.Td>
+
+                              <Table.Td className="whitespace-nowrap">
+                                {rider?.companyWalletBalance}
+                              </Table.Td>
+                              <Table.Td className="whitespace-nowrap">
+                                <Button variant="primary">
+                                  {isLoading ? (
+                                    <LoadingIcon
+                                      icon="oval"
+                                      className="w-8 h-8"
+                                      color="white"
+                                    />
+                                  ) : (
+                                    "View Rides"
+                                  )}
+                                </Button>
+                              </Table.Td>
+                            </Table.Tr>
+                          ))}
                         </Table.Tbody>
                       </Table>
                     </div>
