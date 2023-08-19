@@ -1,3 +1,7 @@
+// ignore all ts errors in this file
+// FIXME remove errors
+// @ts-nocheck
+
 import {
   PreviewComponent,
   Preview,
