@@ -61,6 +61,7 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
       {/* BEGIN: Top Bar */}
       <div className="h-[63px] z-[51] flex items-center relative xl:px-5">
         {/* BEGIN: Breadcrumb */}
+        {/*
         <Breadcrumb light className="hidden -intro-x xl:flex">
           <Breadcrumb.Link to="/">App</Breadcrumb.Link>
           <Breadcrumb.Link to="/">Administrator</Breadcrumb.Link>
@@ -68,6 +69,7 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
             Dashboard
           </Breadcrumb.Link>
         </Breadcrumb>
+        */}
         {/* END: Breadcrumb */}
         {/* BEGIN: Mobile Menu */}
         <div className="mr-3 -intro-x xl:hidden sm:mr-6">
@@ -89,12 +91,11 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
               onClick={showSearchResultModal}
               type="text"
               className="w-80 shadow-none rounded-full text-slate-200 border-transparent bg-white/[0.11] pl-3.5 pr-8 transition-[width] duration-300 ease-in-out placeholder:text-slate-400 focus:border-transparent dark:bg-darkmode-400/70"
-              placeholder="Quick Search... (Ctrl+k)"
             />
-            <Lucide
+            {/*<Lucide
               icon="Search"
               className="absolute inset-y-0 right-0 w-5 h-5 my-auto mr-3 text-slate-400 dark:text-slate-500"
-            />
+      />*/}
           </div>
           <a className="relative text-white/70 sm:hidden" href="">
             <Lucide
@@ -104,7 +105,7 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
           </a>
         </div>
         {/* END: Search */}
-        {/* BEGIN: Search Result */}
+        {/* BEGIN: Search Result 
         <Dialog
           size="lg"
           open={searchResultModal}
@@ -213,9 +214,10 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
             </div>
           </Dialog.Panel>
         </Dialog>
-        {/* END: Search Result */}
+         END: Search Result */}
         {/* BEGIN: Notifications */}
         <Popover className="mr-5 intro-x sm:mr-6">
+          {/*
           <Popover.Button
             className={clsx([
               "relative text-white/70 outline-none block",
@@ -223,8 +225,9 @@ function Main(props: { toggleMobileMenu: (event: React.MouseEvent) => void }) {
               "after:content-[''] after:w-[8px] after:h-[8px] after:rounded-full after:absolute after:top-[-2px] after:right-0 after:bg-danger",
             ])}
           >
-            <Lucide icon="Bell" className="w-5 h-5 dark:text-slate-500" />
-          </Popover.Button>
+            {/*<Lucide icon="Bell" className="w-5 h-5 dark:text-slate-500" />*/}
+          {/*</Popover.Button>
+           */}
           <Popover.Panel className="w-[280px] sm:w-[350px] p-5 mt-2">
             <div className="mb-5 text-base font-medium">Notifications</div>
             {_.take(fakerData, 3).map((faker, fakerKey) => (
